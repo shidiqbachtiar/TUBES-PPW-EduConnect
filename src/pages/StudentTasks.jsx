@@ -1,2 +1,95 @@
-import PageHeading from '../components/PageHeading';import {useStore} from '../store';
-export default function StudentTasks({user}){const [data,mutate]=useStore();const tasks=data.tasks.filter(t=>!t.assignedClass||!user?.className||t.assignedClass.toLowerCase()===user.className.toLowerCase()||t.assignedClass==='Semua kelas');function submit(t){mutate(d=>{const old=d.submissions.find(s=>s.taskId===t.id&&s.studentId===user.id);if(old){old.status='Dikumpulkan';old.submittedAt=new Date().toLocaleDateString('id-ID')}else d.submissions.push({id:Date.now(),taskId:t.id,taskTitle:t.title,studentId:user.id,studentName:user.name,status:'Dikumpulkan',grade:'',submittedAt:new Date().toLocaleDateString('id-ID')})})}return <><PageHeading eyebrow="RUANG MURID" title="Tugas Saya" description={`Tugas pembelajaran untuk ${user?.className||'kelas kamu'}. Status pengumpulan dapat dilihat Guru.`}/><section className="panel"><h2>Daftar tugas ({tasks.length})</h2><div className="table-wrap"><table className="workspace-table"><thead><tr><th>Tugas</th><th>Mata pelajaran</th><th>Tenggat</th><th>Status</th><th>Nilai</th><th>Aksi</th></tr></thead><tbody>{tasks.map(t=>{const sub=data.submissions.find(s=>s.taskId===t.id&&s.studentId===user.id);return <tr key={t.id}><td>{t.title}</td><td>{t.subject}</td><td>{t.dueDate}</td><td><span className="role-badge">{sub?.status||'Belum dikumpulkan'}</span></td><td>{sub?.grade||'—'}</td><td>{sub?.status==='Dikumpulkan'||sub?.status==='Dinilai'?'Terkirim':<button className="small-button" onClick={()=>submit(t)}>Kumpulkan</button>}</td></tr>})}</tbody></table></div>{!tasks.length&&<p className="muted">Belum ada tugas untuk kelas kamu.</p>}</section></>}
+import PageHeading from "../components/PageHeading";
+import { useStore } from "../store";
+export default function StudentTasks({ user }) {
+  const [data, mutate] = useStore();
+  const tasks = data.tasks.filter(
+    (t) =>
+      !t.assignedClass ||
+      !user?.className ||
+      t.assignedClass.toLowerCase() === user.className.toLowerCase() ||
+      t.assignedClass === "Semua kelas",
+  );
+  function submit(t) {
+    mutate((d) => {
+      const old = d.submissions.find(
+        (s) => s.taskId === t.id && s.studentId === user.id,
+      );
+      if (old) {
+        old.status = "Dikumpulkan";
+        old.submittedAt = new Date().toLocaleDateString("id-ID");
+      } else
+        d.submissions.push({
+          id: Date.now(),
+          taskId: t.id,
+          taskTitle: t.title,
+          studentId: user.id,
+          studentName: user.name,
+          status: "Dikumpulkan",
+          grade: "",
+          submittedAt: new Date().toLocaleDateString("id-ID"),
+        });
+    });
+  }
+  return (
+    <>
+      <PageHeading
+        eyebrow="RUANG MURID"
+        title="Tugas Saya"
+        description={`Tugas pembelajaran untuk ${user?.className || "kelas kamu"}. Status pengumpulan dapat dilihat Guru.`}
+      />
+      <section className="panel">
+        <h2>Daftar tugas ({tasks.length})</h2>
+        <div className="table-wrap">
+          <table className="workspace-table">
+            <thead>
+              <tr>
+                <th>Tugas</th>
+                <th>Mata pelajaran</th>
+                <th>Tenggat</th>
+                <th>Status</th>
+                <th>Nilai</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tasks.map((t) => {
+                const sub = data.submissions.find(
+                  (s) => s.taskId === t.id && s.studentId === user.id,
+                );
+                return (
+                  <tr key={t.id}>
+                    <td>{t.title}</td>
+                    <td>{t.subject}</td>
+                    <td>{t.dueDate}</td>
+                    <td>
+                      <span className="role-badge">
+                        {sub?.status || "Belum dikumpulkan"}
+                      </span>
+                    </td>
+                    <td>{sub?.grade || "—"}</td>
+                    <td>
+                      {sub?.status === "Dikumpulkan" ||
+                      sub?.status === "Dinilai" ? (
+                        "Terkirim"
+                      ) : (
+                        <button
+                          className="small-button"
+                          onClick={() => submit(t)}
+                        >
+                          Kumpulkan
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        {!tasks.length && (
+          <p className="muted">Belum ada tugas untuk kamu.</p>
+        )}
+      </section>
+    </>
+  );
+}
