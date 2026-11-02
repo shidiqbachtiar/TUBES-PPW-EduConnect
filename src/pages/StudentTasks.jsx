@@ -87,7 +87,7 @@ export default function StudentTasks({ user }) {
           </table>
         </div>
         {!tasks.length && (
-          <p className="muted">Belum ada tugas untuk kamu.</p>
+          <p className="muted">Belum ada tugas untuk kelas kamu.</p>
         )}
       </section>
     </>
