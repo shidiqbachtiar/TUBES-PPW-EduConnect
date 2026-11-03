@@ -22,7 +22,7 @@ export default function ManageNews() {
         setTitle('');
         setSummary('');
         setMessage('Berita ditambahkan dan tersedia pada dashboard role lain.');
-    } return
+    }
 
     function editNews(news) {
         setEditingId(news.id);
@@ -62,6 +62,7 @@ export default function ManageNews() {
         setCategory('Prestasi');
         setSummary('');
     }
+    return (
     <>
         <PageHeading eyebrow="KONTEN SEKOLAH" title="Manajemen Berita" description="Berita yang dibuat Admin tampil pada halaman berita Murid dan Guru." />
         <div className="two-columns">
@@ -115,9 +116,11 @@ export default function ManageNews() {
                                             });
                                         }
                                     }}>Hapus Berita</button>
-                            </div>
-                        </div></article>)}
-                </div>
-            </section>
-        </div></>
+                                </div>
+                            </div></article>)}
+                    </div>
+                </section>
+            </div>
+        </>
+    );
 }
